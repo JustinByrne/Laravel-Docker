@@ -7,7 +7,17 @@
 
 ## Installation Steps
 
-### Laravel install
+### Script install
+
+To install the system with an interactive script run
+
+``` shell
+bash ./install.sh
+```
+
+### Manual install
+
+#### Laravel install
 
 Move into the `app` directory
 
@@ -27,7 +37,7 @@ Lastly change the user permissions of the laravel site
 sudo chown -R $USER:$USER ./
 ```
 
-### MySQL install
+#### MySQL install
 
 You will need to add your own password that laravel will use with MySQL. Open the `docker-compose.yml` file and change the following line for your chosen root password
 
@@ -54,7 +64,7 @@ volumes:
     driver: local
 ```
 
-### Setting up Laravel
+#### Setting up Laravel
 
 Laravel uses a `.env` file to manage settings this file will need to be created.
 
@@ -65,6 +75,7 @@ cp ./app/.env.example ./app/.env
 The `.env` file will then need to be changed to match the settings provided earlier. Find the `DB_CONNECTION` section and change the following to the password you would like for the `laraveluser` user
 
 ``` shell
+DB_HOST=db
 DB_PASSWORD=your_laravel_password
 ```
 
