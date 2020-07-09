@@ -7,9 +7,9 @@ clear
 echo -n Project name: 
 read app
 
-sed  -i "s/container_name: /container_name: $app-/g" docker-compose.yml
-sed  -i "s/app-network/$app-network/g" docker-compose.yml
-sed  -i "s/dbdata/$app-dbdata/g" docker-compose.yml
+sed  -i "s/container_name: /container_name: $app/g" docker-compose.yml
+sed  -i 's/app-network/'"$app"'network/g' docker-compose.yml
+sed  -i 's/dbdata/'"$app"'dbdata/g' docker-compose.yml
 
 
 # MySQL root password
@@ -34,7 +34,7 @@ sed  -i "s/DB_PASSWORD=/DB_PASSWORD=$sqlPass/g" .env
 
 
 # laravel setup
-sed  -i "s/DB_HOST=127.0.0.1/DB_HOST=$app-db/g" .env
+sed  -i 's/DB_HOST=127.0.0.1/DB_HOST='"$app"'db/g' .env
 docker run --rm -v $(pwd):/app composer install
 sudo chown -R $USER:$USER ./
 cd ../
