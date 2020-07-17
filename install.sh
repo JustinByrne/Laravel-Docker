@@ -42,5 +42,5 @@ docker-compose up -d
 docker-compose exec app php artisan key:generate
 docker-compose exec app php artisan config:cache
 
-docker-compose exec db mysql -u root -p$sqlPass -e "GRANT ALL ON laravel.* TO \"$sqlUser\"@'%' IDENTIFIED BY \"$sqlPass\";"
+docker-compose exec db mysql -u root -p$sqlPass -e "GRANT ALL ON laravel.* TO '$sqlUser'@'%' IDENTIFIED BY '$sqlPass';"
 docker-compose exec db mysql -u root -p$sqlPass -e "FLUSH PRIVILEGES;"
