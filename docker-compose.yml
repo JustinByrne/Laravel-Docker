@@ -53,11 +53,25 @@ services:
       - ./mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - app-network
+  
+  #PHPMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db:db
+    ports:
+      - 8080:80
+    environment: 
+      MYSQL_ROOT_PASSWORD: your_mysql_root_password
+    networks:
+      - app-network
 
 #Docker Networks
 networks:
   app-network:
     driver: bridge
+
 #Volumes
 volumes:
   dbdata:
