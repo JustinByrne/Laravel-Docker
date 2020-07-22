@@ -58,6 +58,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma
+    restart: unless-stopped
     links:
       - db:db
     ports:
