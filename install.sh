@@ -27,6 +27,8 @@ echo -n Laravel MySQL password:
 read -s sqlPass
 echo
 
+sed  -i "s/MYSQL_USER:/MYSQL_USER: $sqlUser/g" docker-compose.yml
+sed  -i "s/MYSQL_PASSWORD:/MYSQL_PASSWORD: $sqlPass/g" docker-compose.yml
 cd ./app
 cp .env.example .env
 sed  -i "s/DB_USERNAME=root/DB_USERNAME=$sqlUser/g" .env
@@ -41,6 +43,3 @@ cd ../
 docker-compose up -d
 docker-compose exec app php artisan key:generate
 docker-compose exec app php artisan config:cache
-
-docker-compose exec db mysql -u root -p$sqlPass -e "GRANT ALL ON laravel.* TO \"$sqlUser\"@\"%\" IDENTIFIED BY \"$sqlPass\";"
-docker-compose exec db mysql -u root -p$sqlPass -e "FLUSH PRIVILEGES;"

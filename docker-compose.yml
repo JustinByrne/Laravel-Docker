@@ -46,6 +46,8 @@ services:
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: your_mysql_root_password
+      MYSQL_USER:
+      MYSQL_PASSWORD:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
