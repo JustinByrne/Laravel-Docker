@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm-alpine
 
 # Copy composer.lock and composer.json
 COPY ./app/composer.lock ./app/composer.json /var/www/
@@ -7,27 +7,14 @@ COPY ./app/composer.lock ./app/composer.json /var/www/
 WORKDIR /var/www
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN apk add curl php7-pdo_mysql php7-mbstring php7-bcmath php7-json php7-xml php7-zip
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Add user for laravel application
-RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
+RUN addgroup -g 1000 www
+RUN adduser -u 1000 -s /bin/sh -G www -D www
 
 # Copy existing application directory contents
 COPY ./app /var/www
