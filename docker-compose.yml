@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: jrlbyrne/php:7.4-fpm
+    image: jrlbyrne/php:7.4-fpm-alpine
     container_name: app
     restart: unless-stopped
     tty: true
