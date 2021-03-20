@@ -10,9 +10,15 @@ $env = ".\app\.env"
 # Getting user Input
 $app = Read-Host "Project name"
 $domain = Read-Host "FQDN"
-$sqlRoot = Read-Host "MySQL Root Password"
+$sqlRoot = Read-Host -AsSecureString "MySQL Root Password" | ConvertFrom-SecureString
 $sqlUser = Read-Host "Laravel MySQL Username"
-$sqlPass = Read-Host "Laravel MySQL Password"
+$sqlPass = Read-Host -AsSecureString "Laravel MySQL Password" | ConvertFrom-SecureString
+$env = Read-Host "Environment (dev/prod) [dev]"
+
+if ([string]::IsNullOrWhiteSpace($env))
+{
+    $env = "dev"
+}
 
 # Updating the compose file with details above
 $composeContent = Get-Content -Path $compose
@@ -34,6 +40,12 @@ $envContent -replace 'DB_USERNAME=root', "DB_USERNAME=$($sqlUser)" `
     -replace 'DB_PASSWORD=', "DB_PASSWORD=$($sqlPass)" `
     -replace 'DB_HOST=127.0.0.1', "DB_HOST=$($app)db" | Set-Content -Path $env | Out-Null
 
+if ($env -eq "prod")
+{
+    $envContent -replace 'APP_ENV=local', 'APP_ENV=production' `
+        -replace 'APP_DEBUG=true', 'APP_DEBUG=false'
+}
+
 # Installing with composer
 docker run --rm -v $pwd/app/:/app composer install
 
@@ -43,4 +55,8 @@ docker run --rm -e PUBLIC_CN="$($domain)" -v $pwd/nginx/ssl/:/etc/ssl/certs pgar
 # Starting the stack and startup changes
 docker-compose up -d
 docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan config:cache
+
+if ($env -eq "prod")
+{
+    docker-compose exec app php artisan config:cache
+}

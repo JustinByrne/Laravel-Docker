@@ -4,18 +4,13 @@
 clear
 
 # Getting user input
-echo -n Project name: 
-read app
-echo -n Domain name:
-read domain
-echo -n MySQL root password: 
-read -s sqlRoot
-echo 
-echo -n Laravel MySQL username: 
-read sqlUser
-echo -n Laravel MySQL password: 
-read -s sqlPass
-echo 
+read -p "Project name: " app
+read -p "Domain name: " domain
+read -s "MySQL root password: " sqlRoot
+read -p "Laravel MySQL username: " sqlUser
+read -s "Laravel MySQL password: " sqlPass
+read -p "Environment (dev/prod) [dev]: " env
+env = ${env:-dev}
 
 # Updating the docker-compose file
 sed  -i "s/container_name: /container_name: $app/g" docker-compose.yml
@@ -31,6 +26,11 @@ sed  -i "s/DB_USERNAME=root/DB_USERNAME=$sqlUser/g" $(pwd)/app/.env
 sed  -i "s/DB_PASSWORD=/DB_PASSWORD=$sqlPass/g" $(pwd)/app/.env
 sed  -i 's/DB_HOST=127.0.0.1/DB_HOST='"$app"'db/g' $(pwd)/app/.env
 
+if [$env == "prod"] then
+    sed  -i 's/APP_ENV=local/APP_ENV=production/g' $(pwd)/app/.env
+    sed  -i 's/APP_DEBUG=true/APP_DEBUG=false/g' $(pwd)/app/.env
+fi
+
 # Making changes to the nginx config
 sed  -i "s/server_name localhost/server_name $domain/g" $(pwd)/nginx/conf.d/app.conf
 
@@ -45,4 +45,7 @@ docker run --rm -e PUBLIC_CN=$domain -v $(pwd)/nginx/ssl/:/etc/ssl/certs pgarret
 # Starting docker and finsihing laravel install
 docker-compose up -d
 docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan config:cache
+
+if [$env == "prod"] then
+    docker-compose exec app php artisan config:cache
+fi
