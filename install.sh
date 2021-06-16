@@ -11,8 +11,7 @@ printf "\n"
 read -p "Laravel MySQL username: " sqlUser
 read -p "Laravel MySQL password: " -s sqlPass
 printf "\n"
-read -p "Environment (dev/prod) [dev]: " env
-env = ${env:-dev}
+read -p "Environment (dev/prod): " env
 
 # Updating the docker-compose file
 sed  -i "s/container_name: /container_name: $app/g" docker-compose.yml
