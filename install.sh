@@ -46,6 +46,7 @@ docker run --rm -e PUBLIC_CN=$domain -v $(pwd)/nginx/ssl/:/etc/ssl/certs pgarret
 # Starting docker and finsihing laravel install
 docker-compose up -d
 docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan storage:link
 
 if [ $env == "prod" ]; then
     docker-compose exec app php artisan config:cache

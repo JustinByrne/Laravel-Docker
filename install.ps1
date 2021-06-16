@@ -55,6 +55,7 @@ docker run --rm -e PUBLIC_CN="$($domain)" -v $pwd/nginx/ssl/:/etc/ssl/certs pgar
 # Starting the stack and startup changes
 docker-compose up -d
 docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan storage:link
 
 if ($env -eq "prod")
 {
