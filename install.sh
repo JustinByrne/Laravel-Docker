@@ -7,8 +7,10 @@ clear
 read -p "Project name: " app
 read -p "Domain name: " domain
 read -p "MySQL root password: " -s sqlRoot
+printf "\n"
 read -p "Laravel MySQL username: " sqlUser
 read -p "Laravel MySQL password: " -s sqlPass
+printf "\n"
 read -p "Environment (dev/prod) [dev]: " env
 env = ${env:-dev}
 
