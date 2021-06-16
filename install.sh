@@ -27,7 +27,7 @@ sed  -i "s/DB_USERNAME=root/DB_USERNAME=$sqlUser/g" $(pwd)/app/.env
 sed  -i "s/DB_PASSWORD=/DB_PASSWORD=$sqlPass/g" $(pwd)/app/.env
 sed  -i 's/DB_HOST=127.0.0.1/DB_HOST='"$app"'db/g' $(pwd)/app/.env
 
-if [$env == "prod"] then
+if [ $env == "prod" ]; then
     sed  -i 's/APP_ENV=local/APP_ENV=production/g' $(pwd)/app/.env
     sed  -i 's/APP_DEBUG=true/APP_DEBUG=false/g' $(pwd)/app/.env
 fi
@@ -47,6 +47,6 @@ docker run --rm -e PUBLIC_CN=$domain -v $(pwd)/nginx/ssl/:/etc/ssl/certs pgarret
 docker-compose up -d
 docker-compose exec app php artisan key:generate
 
-if [$env == "prod"] then
+if [ $env == "prod" ]; then
     docker-compose exec app php artisan config:cache
 fi
