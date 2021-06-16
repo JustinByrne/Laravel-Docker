@@ -6,9 +6,9 @@ clear
 # Getting user input
 read -p "Project name: " app
 read -p "Domain name: " domain
-read -s "MySQL root password: " sqlRoot
+read -p "MySQL root password: " -s sqlRoot
 read -p "Laravel MySQL username: " sqlUser
-read -s "Laravel MySQL password: " sqlPass
+read -p "Laravel MySQL password: " -s sqlPass
 read -p "Environment (dev/prod) [dev]: " env
 env = ${env:-dev}
 
