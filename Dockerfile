@@ -21,7 +21,7 @@ RUN adduser -u 1000 -s /bin/sh -G www -D www
 COPY ./app /var/www
 
 # Copy existing application directory permissions
-COPY --chown=www:www ./app /var/www
+COPY --chown=www-data:www-data ./app /var/www
 
 # Change current user to www
 USER www
