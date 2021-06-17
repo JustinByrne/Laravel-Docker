@@ -10,10 +10,16 @@ $envFile = ".\app\.env"
 # Getting user Input
 $app = Read-Host "Project name"
 $domain = Read-Host "FQDN"
-$sqlRoot = Read-Host -AsSecureString "MySQL Root Password" | ConvertFrom-SecureString
+$sqlRootEncr = Read-Host -AsSecureString "MySQL Root Password"
 $sqlUser = Read-Host "Laravel MySQL Username"
-$sqlPass = Read-Host -AsSecureString "Laravel MySQL Password" | ConvertFrom-SecureString
+$sqlPassEncr = Read-Host -AsSecureString "Laravel MySQL Password"
 $env = Read-Host "Environment (dev/prod) [dev]"
+
+# Converting the password strings
+$sqlRootBstr = [System.Runtime.InteropServices.Marshall]::SecureStringToBSTR($sqlRootEncr)
+$sqlRoot = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($sqlRootBstr)
+$sqlPassBstr = [System.Runtime.InteropServices.Marshall]::SecureStringToBSTR($sqlPassEncr)
+$sqlPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($sqlPassBstr)
 
 if ([string]::IsNullOrWhiteSpace($env))
 {
