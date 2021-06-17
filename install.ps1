@@ -29,8 +29,6 @@ if ([string]::IsNullOrWhiteSpace($env))
 # Updating the compose file with details above
 $composeContent = Get-Content -Path $compose
 $composeContent -replace 'container_name: ', "container_name: $($app)" `
-    -replace 'app-network', "$($app)network" `
-    -replace 'dbdata', "$($app)dbdata" `
     -replace 'your_mysql_root_password', "$($sqlRoot)" `
     -replace 'MYSQL_USER:', "MYSQL_USER: $($sqlUser)" `
     -replace 'MYSQL_PASSWORD:', "MYSQL_PASSWORD: $($sqlPass)" | Set-Content -Path $compose | Out-Null

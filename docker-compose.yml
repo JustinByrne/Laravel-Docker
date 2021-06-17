@@ -18,7 +18,7 @@ services:
       - ./app/:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - app-network
+      - network
 
   #Nginx Service
   webserver:
@@ -34,7 +34,7 @@ services:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - ./nginx/ssl/:/etc/ssl/certs/
     networks:
-      - app-network
+      - network
 
   #MySQL Service
   db:
@@ -55,7 +55,7 @@ services:
       - dbdata:/var/lib/mysql/
       - ./mysql/my.cnf:/etc/mysql/my.cnf
     networks:
-      - app-network
+      - network
   
   #PHPMyAdmin Service
   phpmyadmin:
@@ -69,11 +69,11 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: your_mysql_root_password
     networks:
-      - app-network
+      - network
 
 #Docker Networks
 networks:
-  app-network:
+  network:
     driver: bridge
 
 #Volumes

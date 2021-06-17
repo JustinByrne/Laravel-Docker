@@ -15,8 +15,6 @@ read -p "Environment (dev/prod): " env
 
 # Updating the docker-compose file
 sed  -i "s/container_name: /container_name: $app/g" docker-compose.yml
-sed  -i 's/app-network/'"$app"'network/g' docker-compose.yml
-sed  -i 's/dbdata/'"$app"'dbdata/g' docker-compose.yml
 sed  -i "s/your_mysql_root_password/$sqlRoot/g" docker-compose.yml
 sed  -i "s/MYSQL_USER:/MYSQL_USER: $sqlUser/g" docker-compose.yml
 sed  -i "s/MYSQL_PASSWORD:/MYSQL_PASSWORD: $sqlPass/g" docker-compose.yml
