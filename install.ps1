@@ -16,9 +16,9 @@ $sqlPassEncr = Read-Host -AsSecureString "Laravel MySQL Password"
 $env = Read-Host "Environment (dev/prod) [dev]"
 
 # Converting the password strings
-$sqlRootBstr = [System.Runtime.InteropServices.Marshall]::SecureStringToBSTR($sqlRootEncr)
+$sqlRootBstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sqlRootEncr)
 $sqlRoot = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($sqlRootBstr)
-$sqlPassBstr = [System.Runtime.InteropServices.Marshall]::SecureStringToBSTR($sqlPassEncr)
+$sqlPassBstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sqlPassEncr)
 $sqlPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($sqlPassBstr)
 
 if ([string]::IsNullOrWhiteSpace($env))
