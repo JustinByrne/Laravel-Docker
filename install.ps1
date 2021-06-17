@@ -4,8 +4,8 @@ cls
 # Configuration files
 $compose = ".\docker-compose.yml"
 $config = ".\nginx\conf.d\app.conf"
-$envExample = ".\app\.env.example"
-$env = ".\app\.env"
+$envExampleFile = ".\app\.env.example"
+$envFile = ".\app\.env"
 
 # Getting user Input
 $app = Read-Host "Project name"
@@ -34,11 +34,11 @@ $configContent = Get-Content -Path $config
 $configContent -replace 'server_name localhost', "server_name $($domain)" | Set-Content -Path $config | Out-Null
 
 # Updating settings in the .env file
-Copy-Item -Path $envExample -Destination $env
-$envContent = Get-Content -Path $env
+Copy-Item -Path $envExampleFile -Destination $envFile
+$envContent = Get-Content -Path $envFile
 $envContent -replace 'DB_USERNAME=root', "DB_USERNAME=$($sqlUser)" `
     -replace 'DB_PASSWORD=', "DB_PASSWORD=$($sqlPass)" `
-    -replace 'DB_HOST=127.0.0.1', "DB_HOST=$($app)db" | Set-Content -Path $env | Out-Null
+    -replace 'DB_HOST=127.0.0.1', "DB_HOST=$($app)db" | Set-Content -Path $envFile | Out-Null
 
 if ($env -eq "prod")
 {
