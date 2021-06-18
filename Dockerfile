@@ -7,8 +7,27 @@ COPY ./app/composer.lock ./app/composer.json /var/www/
 WORKDIR /var/www
 
 # Install dependencies
-RUN apk add curl oniguruma-dev zlib-dev libpng-dev
-RUN docker-php-ext-install mysqli pdo pdo_mysql mbstring exif pcntl bcmath gd
+RUN apk add --no-cache \
+    curl-dev \
+    oniguruma-dev \
+    freetype-dev \
+    zlib-dev \
+    libpng-dev \
+    jpeg-dev \
+    libjpeg-turbo-dev
+
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg
+    
+RUN docker-php-ext-install mysqli \
+    pdo \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
